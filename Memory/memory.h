@@ -5,9 +5,9 @@
 #include <Windows.h>
 
 
-class Memory{
+class Memory {
 
-private: 
+private:
 	HANDLE process = nullptr; // aka void* process -> used to get the pointer of the process (the handle to a process)
 	DWORD processId = 0; // aka unsigned long processId
 
@@ -16,7 +16,7 @@ public:
 	~Memory(); //destructor 
 
 	DWORD getProcessId() { return this->processId; }
-	HANDLE getProcessHandle() { return this->process;  }
+	HANDLE getProcessHandle() { return this->process; }
 
 
 	template <typename T>
@@ -35,5 +35,4 @@ public:
 };
 
 #endif // !_MEMORY_H
-
 
