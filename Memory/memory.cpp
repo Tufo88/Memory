@@ -3,7 +3,7 @@
 #include <TlHelp32.h>
 #include <iostream>
 
-#define LOG(x) std::cout << "\n\n=====================================================\nPROCESS NAME: " << x.szExeFile << "\n  Process ID = " << x.th32ProcessID << " \n"
+#define LOG(x) std::wcout << "\n\n=====================================================\nPROCESS NAME: " << x.szExeFile << "\n  Process ID = " << x.th32ProcessID << " \n"
 
 //constructor 
 Memory::Memory(const char* processName, bool searchProcessOrWindow) {
@@ -14,20 +14,23 @@ Memory::Memory(const char* processName, bool searchProcessOrWindow) {
 
 
 	if (hProcessSnapshot == INVALID_HANDLE_VALUE) std::cout << "xd \n";
-	
+
 
 	while (Process32Next(hProcessSnapshot, &processEntry)) {
-		LOG(processEntry); //mostrar en cmd todos los procesos
-		Sleep(10000);
+		
 
-		if (processName == processEntry.szExeFile) { //guardar el puntero al proceso en mi Memory y el id del proceso
+		if (!strcmp(processEntry.szExeFile, processName)) { //guardar el puntero al proceso en mi Memory y el id del proceso
+			
+		LOG(processEntry); //mostrar en cmd todos los procesos
 			this->processId = processEntry.th32ProcessID;
 			this->process = OpenProcess(PROCESS_ALL_ACCESS, 0, this->processId);
-
+			
 		}
 
 	}
-	
+
+	std::cout << processName << std::endl;
+	std::cout << this->process << " " << this->processId;
 
 	if (hProcessSnapshot) CloseHandle(hProcessSnapshot);
 }
