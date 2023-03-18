@@ -31,7 +31,7 @@ public:
 		return WriteProcessMemory(this->process, (LPCVOID)address, &value, sizeof(T), nullptr);
 	}
 
-
+	uintptr_t GetModuleAddress(const char* moduleName);
 };
 
 #endif // !_MEMORY_H
