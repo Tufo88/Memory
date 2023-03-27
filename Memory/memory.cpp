@@ -25,13 +25,13 @@ Memory::Memory(const char* processName, bool searchProcessOrWindow) {
 			this->processId = processEntry.th32ProcessID;
 			this->process = OpenProcess(PROCESS_ALL_ACCESS, 0, this->processId);
 			
-			
+			break;
 		}
 
 	}
 
 	std::cout << processName << std::endl;
-	std::wcout << this->process << " " << this->processId;
+	std::cout << this->process << " " << this->processId;
 
 	if (hProcessSnapshot) CloseHandle(hProcessSnapshot);
 }
@@ -76,8 +76,14 @@ uintptr_t Memory::GetModuleAddress(const char* moduleName) { //obtener el punter
 
 	uintptr_t address = NULL;
 
+	std::cout << this->processId;
+	std::cout << Module32First(moduleSnapshot, &moduleEntry);
+	std::cout << "\n\n=====================================================\nPROCESS NAME: " << moduleEntry.szExePath << " "
+		<< moduleEntry.szModule << "\n Process ID = " << moduleEntry.modBaseAddr << " \n";
+	
 	while (Module32Next(moduleSnapshot, &moduleEntry)) {
-
+		std::cout << "\n\n=====================================================\nPROCESS NAME: " << moduleEntry.szExePath << " "
+			<< moduleEntry.szModule << "\n Process ID = " << moduleEntry.modBaseAddr << " \n";
 		if (!strcmp(moduleName, moduleEntry.szModule)) {
 
 			address = (uintptr_t)moduleEntry.modBaseAddr;
@@ -85,5 +91,7 @@ uintptr_t Memory::GetModuleAddress(const char* moduleName) { //obtener el punter
 		}
 
 	}
+
+	return address;
 
 }
